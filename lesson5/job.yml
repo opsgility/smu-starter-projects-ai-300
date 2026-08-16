@@ -1,0 +1,22 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+
+display_name: meridian-eta-baseline
+experiment_name: meridian-eta-predictor
+
+code: .
+command: >-
+  python train.py
+  --driver_logs ${{inputs.driver_logs}}
+  --max_depth 6
+  --learning_rate 0.1
+  --n_estimators 200
+
+environment: azureml:eta-training-env:1
+compute: azureml:cpu-cluster
+
+inputs:
+  driver_logs:
+    type: uri_file
+    path: azureml:driver-gps-logs:1
+    mode: ro_mount

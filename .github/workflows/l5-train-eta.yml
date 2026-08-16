@@ -1,0 +1,44 @@
+name: Train Meridian ETA predictor
+
+on:
+  workflow_dispatch:
+    inputs:
+      data_version:
+        description: 'driver-gps-logs data asset version to train on'
+        required: true
+        default: '1'
+  schedule:
+    # Weekly retrain every Monday at 07:00 UTC.
+    - cron: '0 7 * * 1'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    env:
+      RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+      WORKSPACE_NAME: meridian-mlws-eta
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sign in to Azure via OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install Azure ML CLI extension
+        run: az extension add --name ml --yes
+
+      - name: Submit training job
+        run: |
+          az ml job create \
+            --file lesson5/job.yml \
+            --resource-group "$RESOURCE_GROUP" \
+            --workspace-name "$WORKSPACE_NAME" \
+            --set inputs.driver_logs.path=azureml:driver-gps-logs:${{ inputs.data_version || '1' }}

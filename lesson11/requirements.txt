@@ -1,0 +1,14 @@
+# Reference manifest for local dev + PR reviewers.
+# Every package below is ALREADY installed in the lab's python-ai container
+# image — do NOT `pip install` inside the lab. Version pins document what
+# the code was authored against; the container may carry a newer patch.
+azure-ai-evaluation==1.18.3
+azure-ai-projects>=2.0.0
+azure-identity>=1.19.0
+azure-monitor-opentelemetry>=1.6.0
+opentelemetry-api>=1.28.0
+opentelemetry-sdk>=1.28.0
+opentelemetry-instrumentation-requests>=0.49b0
+python-dotenv>=1.0.0
+pandas>=2.2.0
+requests>=2.32.0

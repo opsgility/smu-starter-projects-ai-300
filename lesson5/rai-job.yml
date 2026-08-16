@@ -1,0 +1,56 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+display_name: meridian-eta-rai-dashboard
+experiment_name: meridian-eta-predictor
+
+# Fill these in with the run name of your winning sweep trial (Exercise 5)
+# and the registered model version (defaults to 1 on first registration).
+inputs:
+  target_column_name: eta_minutes
+  train_data:
+    type: mltable
+    path: azureml:driver-gps-logs-mltable:1
+  test_data:
+    type: mltable
+    path: azureml:driver-gps-logs-mltable:1
+  model_info:
+    type: string
+    default: meridian-eta-predictor:1
+
+settings:
+  default_compute: azureml:cpu-cluster
+
+jobs:
+  rai_constructor:
+    type: command
+    component: azureml://registries/azureml/components/rai_tabular_insight_constructor/labels/latest
+    inputs:
+      title: Meridian ETA — Responsible AI dashboard
+      task_type: regression
+      model_info: ${{parent.inputs.model_info}}
+      train_dataset: ${{parent.inputs.train_data}}
+      test_dataset: ${{parent.inputs.test_data}}
+      target_column_name: ${{parent.inputs.target_column_name}}
+      categorical_column_names: '["driver_id", "route_id", "day_of_week", "hour_of_day"]'
+
+  rai_error_analysis:
+    type: command
+    component: azureml://registries/azureml/components/rai_tabular_erroranalysis/labels/latest
+    inputs:
+      rai_insights_dashboard: ${{parent.jobs.rai_constructor.outputs.rai_insights_dashboard}}
+
+  rai_explanation:
+    type: command
+    component: azureml://registries/azureml/components/rai_tabular_explanation/labels/latest
+    inputs:
+      rai_insights_dashboard: ${{parent.jobs.rai_constructor.outputs.rai_insights_dashboard}}
+      comment: Meridian ETA feature importances
+
+  rai_gather:
+    type: command
+    component: azureml://registries/azureml/components/rai_tabular_insight_gather/labels/latest
+    inputs:
+      constructor: ${{parent.jobs.rai_constructor.outputs.rai_insights_dashboard}}
+      insight_1: ${{parent.jobs.rai_error_analysis.outputs.error_analysis}}
+      insight_2: ${{parent.jobs.rai_explanation.outputs.explanation}}

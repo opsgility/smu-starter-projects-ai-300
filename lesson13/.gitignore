@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+training.jsonl
+training.raw.jsonl
+baseline_scores.json
+hybrid_scores.json
+chunk_*_scores.json
+ab_results.json

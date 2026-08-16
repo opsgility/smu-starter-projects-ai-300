@@ -1,0 +1,7 @@
+{
+  "input_data": {
+    "columns": ["origin", "destination", "pickup_iso", "carrier_tier", "load_class"],
+    "index": [0],
+    "data": [["Fresno,CA", "Denver,CO", "2026-08-18T09:00:00-07:00", "standard", "partial"]]
+  }
+}

@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
+name: meridian-eta-endpoint
+auth_mode: aad_token
+description: Meridian ETA predictor — classical GBM. Consumed by the Dispatcher's predict_eta tool.

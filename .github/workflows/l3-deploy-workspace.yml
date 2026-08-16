@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'project/main.bicep'
+      - 'lesson3/main.bicep'
       - '.github/workflows/deploy-workspace.yml'
   workflow_dispatch:
 
@@ -64,7 +64,7 @@ jobs:
         run: |
           az deployment group what-if \
             --resource-group "$AZURE_RESOURCE_GROUP" \
-            --template-file project/main.bicep \
+            --template-file lesson3/main.bicep \
             --parameters \
               workspaceNameSuffix="$WORKSPACE_NAME_SUFFIX" \
               storageAccountName="$STORAGE_ACCOUNT_NAME" \
@@ -77,7 +77,7 @@ jobs:
           az deployment group create \
             --name "deploy-workspace-${{ github.run_id }}" \
             --resource-group "$AZURE_RESOURCE_GROUP" \
-            --template-file project/main.bicep \
+            --template-file lesson3/main.bicep \
             --parameters \
               workspaceNameSuffix="$WORKSPACE_NAME_SUFFIX" \
               storageAccountName="$STORAGE_ACCOUNT_NAME" \

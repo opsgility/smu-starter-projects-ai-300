@@ -1,0 +1,67 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "## Meridian Auto-Dispatch — one glass\n\nFive tiles. Exercise 6 fills each with a real KQL query against Log Analytics + Application Insights."
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "// TODO Exercise 6 — ETA endpoint p95 latency + accuracy",
+        "size": 0,
+        "title": "ETA endpoint p95 latency + accuracy",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "// TODO Exercise 6 — Dispatcher rolling groundedness (7d)",
+        "size": 0,
+        "title": "Dispatcher rolling groundedness",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "// TODO Exercise 6 — Dispatcher token cost per day",
+        "size": 0,
+        "title": "Dispatcher token cost / day",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "// TODO Exercise 6 — Search retrieval quality",
+        "size": 0,
+        "title": "Search retrieval quality",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "// TODO Exercise 6 — Auto-Dispatch match rate (business KPI)",
+        "size": 0,
+        "title": "Auto-Dispatch matched / total (last 24h)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      }
+    }
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

@@ -1,0 +1,31 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: meridian-eta-predictor-retrain
+experiment_name: meridian-eta-retrain
+description: >
+  Placeholder retrain job for the Meridian ETA predictor. Consumes the last 14 days of
+  driver-GPS + delivery-outcome data and produces a new model version registered as
+  meridian-eta-predictor. Fired by the retrain-on-drift GitHub Actions workflow.
+
+compute: azureml:cpu-cluster
+
+inputs:
+  training_data:
+    type: uri_folder
+    path: azureml:meridian-driver-gps-last14d:1
+    mode: ro_mount
+  registered_model_name: meridian-eta-predictor
+
+outputs:
+  model_output:
+    type: mlflow_model
+
+environment: azureml:AzureML-sklearn-1.1-ubuntu20.04-py38-cpu@latest
+
+code: ./src
+
+command: >-
+  python train.py
+  --training-data ${{inputs.training_data}}
+  --registered-model-name ${{inputs.registered_model_name}}
+  --model-output ${{outputs.model_output}}

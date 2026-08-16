@@ -1,0 +1,49 @@
+name: Deploy ETA endpoint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "lesson14/ml/**"
+      - ".github/workflows/l14-deploy-eta.yml"
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Register the model
+        # TODO Exercise 1: az ml model create --path <trained_model_dir> --name meridian-eta-predictor
+        run: echo "Exercise 1 — register model"
+
+      - name: Create or update endpoint
+        run: |
+          az ml online-endpoint create \
+            -f lesson14/ml/endpoints/eta-endpoint.yml \
+            -g ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            -w ${{ secrets.AZURE_ML_WORKSPACE }} || \
+          az ml online-endpoint update \
+            -f lesson14/ml/endpoints/eta-endpoint.yml \
+            -g ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            -w ${{ secrets.AZURE_ML_WORKSPACE }}
+
+      - name: Deploy blue at 100%
+        run: |
+          az ml online-deployment create \
+            -f lesson14/ml/endpoints/eta-deployment-blue.yml \
+            -g ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            -w ${{ secrets.AZURE_ML_WORKSPACE }} \
+            --all-traffic

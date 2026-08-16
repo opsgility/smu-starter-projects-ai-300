@@ -1,0 +1,15 @@
+{"question": "What is the detention rate and cap in MSA-Cascadia-2025?", "ground_truth": "$75/hour after 2 free hours, capped at $600 per stop (Section 4.2)."}
+{"question": "What is the base linehaul rate in MSA-Cascadia-2025 and how is fuel handled?", "ground_truth": "Base $2.15/mile plus a fuel surcharge indexed weekly to DOE #2 diesel (Section 2.3)."}
+{"question": "Summarize the termination clauses across every MSA. Include for-cause and convenience notice periods.", "ground_truth": "Cascadia: 30-day cause / 90-day convenience. Nordfjord: 60-day either party, auto-renew. Redwood: 30-day cause / 60-day convenience. Kestrel: 30-day either party, no cause required."}
+{"question": "What is the indemnity cap in MSA-Nordfjord-2024?", "ground_truth": "$5,000,000 per occurrence, mutual (Section 6.1)."}
+{"question": "What is the container rate in MSA-Nordfjord-2024 and what free time applies?", "ground_truth": "$1,850 per 40-foot ISO plus IPI drayage; 48 hours free at origin ramp, 72 hours at destination ramp."}
+{"question": "What triggers a full-shipment refund under SOW-Auberdine-2025?", "ground_truth": "A temperature deviation exceeding 1.5°C for more than 30 minutes documented by GPS-linked probe (Section 4.2)."}
+{"question": "What insurance coverages must Redwood Cartage maintain and who is named additional insured?", "ground_truth": "$1M auto liability, $100K cargo, $1M general liability, all naming Meridian as additional insured (Section 9.2)."}
+{"question": "What is the cancellation policy in MSA-Kestrel-2025?", "ground_truth": "100% cancellation fee if the load is cancelled after the driver is dispatched (Section 4.5)."}
+{"question": "Which contracts have expedited or premium detention rates and what are they?", "ground_truth": "Kestrel Expedited: $90/hour after 1 free hour (expedited premium)."}
+{"question": "List every contract that has a documented indemnity cap and the cap amount.", "ground_truth": "Cascadia $2M/occurrence; Nordfjord $5M/occurrence; Redwood $1M; Kestrel $100K cargo unless declared."}
+{"question": "What is the storage charge under MSA-Nordfjord-2024 after free time expires?", "ground_truth": "$95 per container per day (Section 4.2)."}
+{"question": "What is the effective date and scope of SOW-Auberdine-2025?", "ground_truth": "Effective 2025-06-01, temperature-controlled LTL pharmaceutical shipments held at 2-8°C."}
+{"question": "Under MSA-Redwood-2024, what is the layover charge and how many layovers are capped per trip?", "ground_truth": "$250 per 24-hour layover, capped at 3 consecutive layovers per trip (Section 4.7)."}
+{"question": "Which contract has a fixed all-in rate with no fuel surcharge?", "ground_truth": "MSA-Redwood-2024 — base linehaul $2.05/mile, no fuel surcharge (Section 2.3)."}
+{"question": "What tiered rates does MSA-Kestrel-2025 specify for cargo van vs straight truck?", "ground_truth": "$1.85/mile for van, $2.60/mile for straight truck, plus $150 dispatch fee (Section 2.3)."}

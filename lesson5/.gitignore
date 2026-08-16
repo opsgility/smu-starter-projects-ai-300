@@ -1,0 +1,16 @@
+# Local training artifacts
+outputs/
+mlruns/
+model/
+*.pkl
+__pycache__/
+.pytest_cache/
+.venv/
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

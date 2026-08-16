@@ -1,0 +1,80 @@
+name: Deploy Auto-Dispatch (top-level)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  bicep-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # TODO Exercise 4: az deployment group validate + what-if against infra/main.bicep,
+      # fail on Modify/Delete outside the allow-list.
+      - run: echo "Exercise 4 — bicep-validate"
+
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      ml: ${{ steps.filter.outputs.ml }}
+      dispatcher: ${{ steps.filter.outputs.dispatcher }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            ml:
+              - 'lesson14/ml/**'
+            dispatcher:
+              - 'lesson14/app/**'
+              - 'lesson14/prompts/**'
+              - 'lesson14/Dockerfile'
+
+  train-eta:
+    needs: [bicep-validate, changes]
+    if: needs.changes.outputs.ml == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # TODO Exercise 4: submit AzureML job, gated by numeric improvement.
+      - run: echo "Exercise 4 — train-eta"
+
+  build-dispatcher:
+    needs: [bicep-validate, changes]
+    if: needs.changes.outputs.dispatcher == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.tag.outputs.image_tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: tag
+        run: echo "image_tag=${{ github.sha }}" >> $GITHUB_OUTPUT
+      # TODO Exercise 4: az acr build.
+      - run: echo "Exercise 4 — build-dispatcher"
+
+  deploy-dispatcher:
+    needs: build-dispatcher
+    if: needs.build-dispatcher.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      # TODO Exercise 4: containerapp update at 10% initial weight.
+      - run: echo "Exercise 4 — deploy-dispatcher at 10%"
+
+  progressive-rollout:
+    needs: deploy-dispatcher
+    runs-on: ubuntu-latest
+    steps:
+      # TODO Exercise 4: read config/traffic-weights.yml, iterate stages, poll App Insights
+      # error rate, abort on threshold breach.
+      - run: echo "Exercise 4 — progressive rollout"

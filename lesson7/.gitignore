@@ -1,0 +1,31 @@
+# Env
+.env
+.env.local
+*.env
+
+# Azure CLI
+.azure/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Notebook state
+.ipynb_checkpoints/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Azure ML local runs
+azureml-logs/
+outputs/
+mlruns/

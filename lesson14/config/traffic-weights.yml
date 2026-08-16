@@ -1,0 +1,10 @@
+# Progressive rollout stages for the Dispatcher Container App.
+# Read by the `progressive-rollout` job in deploy-autodispatch.yml.
+stages:
+  - weight_new: 10
+    wait_seconds: 120
+  - weight_new: 50
+    wait_seconds: 300
+  - weight_new: 100
+    wait_seconds: 0
+error_rate_abort_threshold: 0.02   # 2% error rate on the new revision aborts the roll.

@@ -1,0 +1,42 @@
+name: Nightly evaluation gate
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  pull_request:
+    paths:
+      - "lesson14/prompts/**"
+      - "lesson14/app/**"
+      - "lesson14/evaluation/**"
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Run evaluation battery
+        env:
+          FOUNDRY_PROJECT_ENDPOINT: ${{ secrets.FOUNDRY_PROJECT_ENDPOINT }}
+          CHAT_MINI_DEPLOYMENT: gpt-5-mini
+        run: |
+          python lesson14/evaluation/evaluate.py
+
+      - name: Upload evaluation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-report
+          path: lesson14/evaluation/reports/

@@ -1,0 +1,8 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: meridian-eta-endpoint
+model: azureml:meridian-eta-predictor:1
+instance_type: Standard_DS3_v2
+instance_count: 1
+# Environment inherited from a curated AzureML sklearn image — see ml/train.py for the
+# registered model's inference spec. Exercise 1 registers this model and rolls it out at 100%.

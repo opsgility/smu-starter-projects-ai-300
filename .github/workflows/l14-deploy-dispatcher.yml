@@ -1,0 +1,60 @@
+name: Deploy Dispatcher API
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "lesson14/app/**"
+      - "lesson14/prompts/**"
+      - "lesson14/Dockerfile"
+      - ".github/workflows/l14-deploy-dispatcher.yml"
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  IMAGE_NAME: dispatcher-api
+  APP_NAME: meridian-dispatcher
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build image in ACR
+        run: |
+          az acr build \
+            --registry ${{ secrets.ACR_NAME }} \
+            --image $IMAGE_NAME:${{ github.sha }} \
+            --file lesson14/Dockerfile lesson14
+
+      - name: Create or update Container App
+        # TODO Exercise 2: use --user-assigned $UAMI_RESOURCE_ID and --registry-identity $UAMI_RESOURCE_ID.
+        run: |
+          az containerapp create \
+            -n $APP_NAME \
+            -g ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --environment ${{ secrets.ACA_ENV_NAME }} \
+            --image ${{ secrets.ACR_LOGIN_SERVER }}/$IMAGE_NAME:${{ github.sha }} \
+            --target-port 8080 \
+            --ingress external \
+            --registry-server ${{ secrets.ACR_LOGIN_SERVER }} \
+            --user-assigned ${{ secrets.UAMI_RESOURCE_ID }} \
+            --registry-identity ${{ secrets.UAMI_RESOURCE_ID }} \
+            --env-vars FOUNDRY_PROJECT_ENDPOINT=${{ secrets.FOUNDRY_PROJECT_ENDPOINT }} CHAT_DEPLOYMENT=gpt-5-1 APPLICATIONINSIGHTS_CONNECTION_STRING=${{ secrets.APP_INSIGHTS_CONNECTION_STRING }} \
+            --revision-suffix sha-${{ github.sha }} || \
+          az containerapp update \
+            -n $APP_NAME \
+            -g ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --image ${{ secrets.ACR_LOGIN_SERVER }}/$IMAGE_NAME:${{ github.sha }} \
+            --revision-suffix sha-${{ github.sha }}
