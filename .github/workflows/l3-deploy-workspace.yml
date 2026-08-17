@@ -25,8 +25,11 @@ env:
   CONTAINER_REGISTRY_NAME: ${{ vars.CONTAINER_REGISTRY_NAME || 'meridianmlopsacr' }}
   APP_INSIGHTS_NAME: ${{ vars.APP_INSIGHTS_NAME || 'meridian-mlops-ai' }}
 
+# Upstream (opsgility/…) has no OIDC secrets — those live on student forks.
+# Skip on the upstream mirror so student forks inherit the file unchanged.
 jobs:
   deploy:
+    if: github.repository != 'opsgility/smu-starter-projects-ai-300'
     name: Deploy workspace via Bicep
     runs-on: ubuntu-latest
 

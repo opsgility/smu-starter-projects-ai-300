@@ -12,8 +12,11 @@ permissions:
   id-token: write
   contents: read
 
+# Upstream (opsgility/…) has no OIDC secrets — those live on student forks.
+# Skip on the upstream mirror so student forks inherit the file unchanged.
 jobs:
   deploy:
+    if: github.repository != 'opsgility/smu-starter-projects-ai-300'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

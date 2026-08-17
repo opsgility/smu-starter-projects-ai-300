@@ -3,14 +3,21 @@ name: Deploy Auto-Dispatch (top-level)
 on:
   push:
     branches: [main]
+    paths:
+      - 'lesson14/**'
+      - '.github/workflows/l14-deploy-autodispatch.yml'
   workflow_dispatch: {}
 
 permissions:
   id-token: write
   contents: read
 
+# Upstream (opsgility/…) has no OIDC secrets set — those live on each student
+# fork. Skip every job when running on the upstream mirror so student forks
+# can inherit the workflow file unchanged without upstream noise.
 jobs:
   bicep-validate:
+    if: github.repository != 'opsgility/smu-starter-projects-ai-300'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,6 +31,7 @@ jobs:
       - run: echo "Exercise 4 — bicep-validate"
 
   changes:
+    if: github.repository != 'opsgility/smu-starter-projects-ai-300'
     runs-on: ubuntu-latest
     outputs:
       ml: ${{ steps.filter.outputs.ml }}
