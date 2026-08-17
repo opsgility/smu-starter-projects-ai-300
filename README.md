@@ -13,6 +13,8 @@ smu-starter-projects-ai-300/
 │       ├── l3-deploy-workspace.yml       ← Lesson 3
 │       ├── l5-train-eta.yml              ← Lesson 5
 │       ├── l7-retrain-on-drift.yml       ← Lesson 7
+│       ├── l9-promote-prompt.yml         ← Lesson 9 (student authors in Ex 3)
+│       ├── l9-deploy-dispatcher.yml      ← Lesson 9 (student authors in Ex 4)
 │       ├── l14-deploy-autodispatch.yml   ← Lesson 14 (capstone)
 │       ├── l14-deploy-dispatcher.yml
 │       ├── l14-deploy-eta.yml
@@ -20,6 +22,7 @@ smu-starter-projects-ai-300/
 ├── lesson3/    — MLOps foundation (GitHub, OIDC, Azure ML workspace via Bicep)
 ├── lesson5/    — Train, register, evaluate the ETA predictor
 ├── lesson7/    — Deploy the ETA predictor with progressive rollout + drift monitoring
+├── lesson9/    — Dispatcher Foundry stack + versioned prompts + Container Apps deploy
 ├── lesson11/   — Evaluate and observe Meridian Dispatcher end-to-end
 ├── lesson13/   — RAG tuning + fine-tuning for the contract summarizer
 └── lesson14/   — End-to-end MLOps + GenAIOps capstone (Auto-Dispatch)
